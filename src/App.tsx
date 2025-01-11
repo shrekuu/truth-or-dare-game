@@ -1,5 +1,20 @@
-import './App.css'
+import "./App.css";
+import { emoticons, tasks } from "./data";
 
 export default function App() {
-  return <h1 className="text-3xl font-bold underline text-cyan-400">Hello world!</h1>;
+  return (
+    <div className="grid grid-cols-3 gap-4 p-4">
+      {tasks.map((task, index) => (
+        <div
+          key={index}
+          className="border p-4 text-center rounded"
+          onClick={() => {
+            alert(emoticons[Math.floor(Math.random() * emoticons.length)] + " " + task);
+          }}
+        >
+          <div>{emoticons[Math.floor(Math.random() * emoticons.length)]}</div>
+        </div>
+      ))}
+    </div>
+  );
 }
