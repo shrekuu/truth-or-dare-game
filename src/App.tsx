@@ -11,23 +11,23 @@ const Item = ({ task }: { task: TTask }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border border-neutral-300 aspect-square flex justify-center items-center text-7xl">
-      {viewed ? (
-        <div className="grayscale">🫥</div>
-      ) : (
-        <div
-          onClick={() => {
-            setOpen(true);
-            setViewed(true);
+    <>
+      <div
+        className="border border-neutral-300 aspect-square flex justify-center items-center text-7xl select-none"
+        onClick={() => {
+          if (viewed) {
+            return;
+          }
+          setOpen(true);
+          setViewed(true);
 
-            // read the task
-            const utterance = new SpeechSynthesisUtterance(task);
-            speechSynthesis.speak(utterance);
-          }}
-        >
-          {emoticons[Math.floor(Math.random() * emoticons.length)]}
-        </div>
-      )}
+          // read the task
+          const utterance = new SpeechSynthesisUtterance(task);
+          speechSynthesis.speak(utterance);
+        }}
+      >
+        {viewed ? <div className="grayscale">🫥</div> : <div>{emoticons[Math.floor(Math.random() * emoticons.length)]}</div>}
+      </div>
 
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
@@ -39,7 +39,7 @@ const Item = ({ task }: { task: TTask }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   );
 };
 
