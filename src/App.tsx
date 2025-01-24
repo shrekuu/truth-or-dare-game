@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { emoticons, tasks } from "./data";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { isMobile } from "./lib/utils";
 
 type TTask = string;
 
@@ -13,7 +14,7 @@ const Item = ({ task }: { task: TTask }) => {
   return (
     <>
       <div
-        className="border border-neutral-300 aspect-square flex justify-center items-center text-7xl select-none"
+        className="border border-neutral-300 aspect-square flex justify-center items-center text-3xl md:text-7xl select-none"
         onClick={() => {
           if (viewed) {
             return;
@@ -21,9 +22,11 @@ const Item = ({ task }: { task: TTask }) => {
           setOpen(true);
           setViewed(true);
 
-          // read the task
-          const utterance = new SpeechSynthesisUtterance(task);
-          speechSynthesis.speak(utterance);
+          // read the task on mobile devices
+          if (isMobile()) {
+            const utterance = new SpeechSynthesisUtterance(task);
+            speechSynthesis.speak(utterance);
+          }
         }}
       >
         {viewed ? <div className="grayscale">🫥</div> : <div>{emoticons[Math.floor(Math.random() * emoticons.length)]}</div>}
@@ -48,9 +51,6 @@ export default function App() {
 
   return (
     <div>
-      <header className="p-4 bg-gray-200">
-        <h1 className="text-3xl">盲盒大冒险</h1>
-      </header>
       <main className="grid grid-cols-5 gap-2 p-2">
         {shuffledTasks.map((task, index) => (
           <Item key={index} task={task} />
